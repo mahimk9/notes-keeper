@@ -1,15 +1,25 @@
 <?php
-    $servername = "localhost";
-    $username = "sqluser";
-    $password = "sqlpass0911";
-    $dbname = "noteskeeper";
 
-    $conn = mysqli_connect($servername, $username, $password, $dbname);
-    if(!$conn)
+require_once('includes/db.php');
+
+if(!$conn)
+{
+    die("Connection failed" . mysqli_connect_error());
+}
+
+if($_SERVER["REQUEST_METHOD"] == "POST")
+{
+    $title = $_POST['title'];
+    $content = $_POST['content'];
+    $important = $_POST['important'];
+    $sql="INSERT INTO notes (title, content, important) VALUES ('$title', '$content', '$important')";
+    if(mysqli_query($conn,$sql))
     {
-        die("Connection failed" . mysqli_connect_error());
+        echo 'success';
     }
-    echo "Connection Success";
+    
+}
+
 
 ?>
 
@@ -43,3 +53,7 @@
             
         <input type="submit" />
 </html>
+
+<?php
+    require_once('includes/footer.php'); 
+?>
